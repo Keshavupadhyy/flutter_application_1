@@ -1,85 +1,128 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(LoginApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class LoginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+      home: LoginPage(),
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+        hintColor: Colors.orange,
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(color: Colors.white),
         ),
-        home: const HomePsgr());
+      ),
+    );
   }
 }
 
-class HomePsgr extends StatelessWidget {
-  const HomePsgr({super.key});
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _login() {
+    String username = _usernameController.text;
+    String password = _passwordController.text;
+
+    if (username == 'user' && password == 'password') {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Login Successful"),
+          content: Text("Welcome, $username!"),
+          backgroundColor: Colors.greenAccent,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK", style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Login Failed"),
+          content: Text("Invalid username or password."),
+          backgroundColor: Colors.redAccent,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Retry", style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            color: Colors.yellow,
-            height: 100,
-            width: 100,
-            child: Text('HYPE'),
+      appBar: AppBar(
+        title: Text('Login Page', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.purple,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.purple, Colors.orange],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          Container(
-            color: const Color.fromRGBO(8, 110, 16, 1),
-            height: 100,
-            width: 100,
-            child: Text('GPS'),
-          ),
-          Container(
-            color: const Color.fromARGB(255, 130, 24, 139),
-            height: 100,
-            width: 100,
-            child: Text('Tracker'),
-          ),
-          Container(
-            color: const Color.fromARGB(255, 30, 3, 105),
-            height: 100,
-            width: 100,
-            child: Text('Hello Flutter'),
-          ),
-          Container(
-            color: const Color.fromARGB(255, 111, 189, 199),
-            height: 100,
-            width: 100,
-            child: Text('Hello Dart'),
-          ),
-          Container(
-            color: const Color.fromARGB(255, 33, 139, 74),
-            height: 100,
-            width: 100,
-            child: Text('Hello Material App'),
-          ),
-          Container(
-            color: const Color.fromARGB(0, 16, 2, 17),
-            height: 100,
-            width: 100,
-            child: Text('Hello StateFullWidgets'),
-          ),
-          Container(
-            color: const Color.fromARGB(255, 13, 10, 214),
-            height: 100,
-            width: 100,
-            child: Text('Hello StateLessWidgets'),
-          )
-        ],
-      )),
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _usernameController,
+              decoration: InputDecoration(
+                labelText: 'Username',
+                labelStyle: TextStyle(color: Colors.white),
+                filled: true,
+                fillColor: Colors.white24,
+              ),
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                labelStyle: TextStyle(color: Colors.white),
+                filled: true,
+                fillColor: Colors.white24,
+              ),
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _login,
+              child: Text('Login'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
